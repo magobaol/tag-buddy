@@ -1,0 +1,26 @@
+tags:
+  OKR:
+    name: OKR
+    aliases:
+      - objectives and key results
+      - obiettivi e risultati misurabili
+  analogia:
+    name: analogia
+    aliases: [ analogy ]
+  api-design:
+    name: api-design
+  apprendimento:
+    name: apprendimento
+    aliases:
+      - learning
+      - formazione
+  automazione:
+    name: automazione
+    aliases:
+      - automation
+  software:
+    name: software
+  software-automation:
+    name: software-automation
+  zettelkasten:
+    name: zettelkasten
