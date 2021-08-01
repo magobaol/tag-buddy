@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:search-tags',
+    name: 'app:tags:search',
     description: 'Add a short description for your command',
 )]
 class SearchTagsCommand extends Command
@@ -47,7 +47,7 @@ class SearchTagsCommand extends Command
             $outputFormat = $input->getOption('output');
         }
 
-        $output->writeln($this->tagSearch->getResult($search, $outputFormat));
+        $output->write($this->tagSearch->getResult($search, $outputFormat));
         return Command::SUCCESS;
     }
 }
