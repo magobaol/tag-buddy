@@ -34,7 +34,7 @@ class TagSearch
             case 'yaml':
                 return $this->getResultsForYaml($search);
             case 'alfred':
-                return $this->getResultsForAlred($search);
+                return $this->getResultsForAlfred($search);
 
         }
     }
@@ -49,7 +49,7 @@ class TagSearch
         return self::$formats[0];
     }
 
-    private function getResultsForAlred(string $search): string
+    private function getResultsForAlfred(string $search): string
     {
         $filteredTags = $this->tags->filterBy($search);
         foreach ($filteredTags->getTags() as $tag) {
