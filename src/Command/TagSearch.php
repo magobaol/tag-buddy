@@ -65,7 +65,7 @@ class TagSearch
             $items[] = $item;
         }
 
-        if ($this->tags->findByName($search) == null) {
+        if (($search != '') && ($this->tags->findByName($search) == null)) {
             $items[] = [
                 'title' => $search,
                 'subtitle' => "Add $search as new tag",
