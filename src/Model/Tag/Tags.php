@@ -65,6 +65,12 @@ class Tags
         return $result;
     }
 
+    public function toStringAsListOfNames()
+    {
+        $list = array_map(function (Tag $tag) { return $tag->getName(); }, $this->tags);
+        return implode(PHP_EOL, $list);
+    }
+
     /**
      * @param string $search
      * @return Tags
