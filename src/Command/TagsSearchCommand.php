@@ -2,14 +2,12 @@
 
 namespace App\Command;
 
-use App\Model\Tag\Tags;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:tags:search',
@@ -17,15 +15,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class TagsSearchCommand extends Command
 {
-    /**
-     * @var TagSearch
-     */
-    private TagSearch $tagSearch;
+    private string $tagsFilePath;
 
-    public function __construct(TagSearch $tagSearch)
+    public function __construct(string $tagsFilePath)
     {
-        $this->tagSearch = $tagSearch;
         parent::__construct();
+        $this->tagsFilePath = $tagsFilePath;
     }
 
     protected function configure(): void
@@ -38,7 +33,7 @@ class TagsSearchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $tagSearch = new TagSearch($this->tagsFilePath);
         $search = $input->getArgument('search-terms') ?? "";
 
         if (!$input->getOption('output') || !in_array($input->getOption('output'), TagSearch::getOutputFormats())) {
@@ -47,7 +42,7 @@ class TagsSearchCommand extends Command
             $outputFormat = $input->getOption('output');
         }
 
-        $output->write($this->tagSearch->getResult($search, $outputFormat));
+        $output->write($tagSearch->getResult($search, $outputFormat));
         return Command::SUCCESS;
     }
 }
