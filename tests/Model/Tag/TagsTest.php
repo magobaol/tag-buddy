@@ -8,6 +8,18 @@ use PHPUnit\Framework\TestCase;
 
 class TagsTest extends TestCase
 {
+
+    /**
+     * @test
+     */
+    function it_should_load_an_empty_list_if_yaml_does_not_exists()
+    {
+        $tags = Tags::fromYamlFile(dirname(__FILE__).'/not-existing-tags.yaml');
+
+        $tagsAsArray = $tags->toArray();
+        $this->assertCount(0, $tagsAsArray);
+    }
+
     /**
      * @test
      */

@@ -19,12 +19,13 @@ class Tags
     public static function fromYamlFile($filename): Tags
     {
         $tags = new self();
-        $yaml = Yaml::parseFile($filename);
-        foreach ($yaml['tags'] as $yamlTag) {
-            $tag = Tag::fromArray($yamlTag);
-            $tags->add($tag);
+        if (file_exists($filename)) {
+            $yaml = Yaml::parseFile($filename);
+            foreach ($yaml['tags'] as $yamlTag) {
+                $tag = Tag::fromArray($yamlTag);
+                $tags->add($tag);
+            }
         }
-
         return $tags;
     }
 
