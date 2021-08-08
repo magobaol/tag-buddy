@@ -19,6 +19,14 @@ use Symfony\Component\Yaml\Yaml;
 )]
 class TagsAddCommand extends Command
 {
+    private string $tagsFilePath;
+
+    public function __construct(string $tagsFilePath)
+    {
+        parent::__construct();
+        $this->tagsFilePath = $tagsFilePath;
+    }
+
     protected function configure(): void
     {
         $this
@@ -28,12 +36,11 @@ class TagsAddCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
         $tagName = $input->getArgument('name');
 
         $tag = Tag::fromString($tagName);
 
-        $tags = Tags::fromYamlFile('/Users/francesco/dev/tag-buddy/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFilePath);
         $tags->add($tag);
 
         $yamlData = [
@@ -42,7 +49,7 @@ class TagsAddCommand extends Command
 
         $yamlContent = Yaml::dump($yamlData, 4, 2);
 
-        file_put_contents('/Users/francesco/dev/tag-buddy/tags.yaml', $yamlContent);
+        file_put_contents($this->tagsFilePath, $yamlContent);
 
         return Command::SUCCESS;
     }
