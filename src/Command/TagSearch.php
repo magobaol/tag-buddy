@@ -21,9 +21,9 @@ class TagSearch
      */
     private Tags $tags;
 
-    public function __construct()
+    public function __construct($tagsFilePath)
     {
-        $this->tags = Tags::fromYamlFile('/Users/francesco/dev/tag-buddy/tags.yaml');
+        $this->tags = Tags::fromYamlFile($tagsFilePath);
     }
 
     public function getResult($search, $outputFormat): string
@@ -35,7 +35,6 @@ class TagSearch
                 return $this->getResultsForYaml($search);
             case 'alfred':
                 return $this->getResultsForAlfred($search);
-
         }
     }
 
@@ -51,6 +50,7 @@ class TagSearch
 
     private function getResultsForAlfred(string $search): string
     {
+        $items = [];
         $filteredTags = $this->tags->filterBy($search);
         foreach ($filteredTags->getTags() as $tag) {
 
