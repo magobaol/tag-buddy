@@ -29,6 +29,17 @@ class Tags
         return $tags;
     }
 
+    public function toYamlFile($filename)
+    {
+        $yamlData = [
+            'tags' => $this->toArrayWithNamesAsKeys()
+        ];
+
+        $yamlContent = Yaml::dump($yamlData, 4, 2);
+
+        file_put_contents($filename, $yamlContent);
+    }
+
     public static function fromArrayOfTag($tags): Tags
     {
         $collection = new self();

@@ -8,13 +8,26 @@ use PHPUnit\Framework\TestCase;
 
 class TagsTest extends TestCase
 {
+    private string $notExistingTagsFile;
+    private string $tagsFile;
+
+    protected function setUp(): void
+    {
+        $this->tagsFile = dirname(__FILE__) . '/tags.yaml';
+        $this->notExistingTagsFile = dirname(__FILE__).'/not-existing-tags-file.yaml';
+    }
+
+    public function tearDown(): void
+    {
+        @unlink($this->notExistingTagsFile);
+    }
 
     /**
      * @test
      */
     function it_should_load_an_empty_list_if_yaml_does_not_exists()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/not-existing-tags.yaml');
+        $tags = Tags::fromYamlFile($this->notExistingTagsFile);
 
         $tagsAsArray = $tags->toArray();
         $this->assertCount(0, $tagsAsArray);
@@ -23,9 +36,27 @@ class TagsTest extends TestCase
     /**
      * @test
      */
+    function it_should_save_tags_to_file()
+    {
+        $filename = $this->notExistingTagsFile;
+
+        $this->assertFalse(file_exists($filename));
+
+        $tags = Tags::fromYamlFile($filename);
+
+        $tags->add(Tag::fromString('new-tag'));
+
+        $tags->toYamlFile($filename);
+
+        $this->assertTrue(file_exists($filename));
+    }
+
+    /**
+     * @test
+     */
     function it_should_load_tags_from_yaml_file()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFile);
 
         $tagsAsArray = $tags->toArray();
         $this->assertCount(8, $tagsAsArray);
@@ -79,7 +110,7 @@ class TagsTest extends TestCase
      */
     function it_should_filter_using_tag_name()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFile);
 
         $this->assertCount(1, $tags->filterBy('analog')->getTags());
     }
@@ -89,7 +120,7 @@ class TagsTest extends TestCase
      */
     function it_should_find_a_tag_by_name()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFile);
 
         $this->assertEquals('analogia', $tags->findByName('analogia')->getName());
     }
@@ -100,7 +131,7 @@ class TagsTest extends TestCase
      */
     function it_should_not_find_a_tag_by_name_using_an_alias()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFile);
 
         $this->assertNull($tags->findByName('analogy'));
     }
@@ -111,7 +142,7 @@ class TagsTest extends TestCase
      */
     function it_should_filter_using_tag_name_regardless_of_case()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFile);
 
         $this->assertCount(1, $tags->filterBy('ANALOG')->getTags());
     }
@@ -121,7 +152,7 @@ class TagsTest extends TestCase
      */
     function it_should_filter_using_alias()
     {
-        $tags = Tags::fromYamlFile(dirname(__FILE__).'/tags.yaml');
+        $tags = Tags::fromYamlFile($this->tagsFile);
 
         $filteredTags = $tags->filterBy('automation')->getTags();
         $this->assertCount(2, $filteredTags);

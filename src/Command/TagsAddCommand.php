@@ -42,14 +42,7 @@ class TagsAddCommand extends Command
 
         $tags = Tags::fromYamlFile($this->tagsFilePath);
         $tags->add($tag);
-
-        $yamlData = [
-            'tags' => $tags->toArrayWithNamesAsKeys()
-        ];
-
-        $yamlContent = Yaml::dump($yamlData, 4, 2);
-
-        file_put_contents($this->tagsFilePath, $yamlContent);
+        $tags->toYamlFile($this->tagsFilePath);
 
         return Command::SUCCESS;
     }
