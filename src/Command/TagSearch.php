@@ -50,6 +50,7 @@ class TagSearch
 
     private function getResultsForAlfred(string $search): string
     {
+        $items = [];
         $filteredTags = $this->tags->filterBy($search);
         foreach ($filteredTags->getTags() as $tag) {
 
