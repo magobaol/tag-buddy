@@ -53,6 +53,17 @@ class StringManipulatorTest extends TestCase
 
     /**
      * @test
+     */
+    function it_should_replace_slashes_with_dashes() {
+
+        $input = 'string/with/slashes';
+        $sm = StringManipulator::with($input);
+
+        $this->assertEquals('string-with-slashes', $sm->replaceSlashesWithDashes()->getResult());
+    }
+
+    /**
+     * @test
      * @dataProvider it_should_trim_surrounding_spaces_data
      */
     function it_should_trim_surrounding_spaces($input, $result) {
