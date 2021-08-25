@@ -6,19 +6,18 @@ use Model\Tag\Tags;
 
 class TagsSearchFactory
 {
-    public static function make(string $inputFile, OutputFormat $outputFormat): TagsSearch
+    public static function make(Tags $unfilteredTags, OutputFormat $outputFormat): TagsSearch
     {
-        $tags = Tags::fromYamlFile($inputFile);
         if ($outputFormat->isAlfred()) {
-            return new Alfred($tags);
+            return new Alfred($unfilteredTags);
         }
 
         if ($outputFormat->isSimpleList()) {
-            return new SimpleList($tags);
+            return new SimpleList($unfilteredTags);
         }
 
         if ($outputFormat->isYaml()) {
-            return new Yaml($tags);
+            return new Yaml($unfilteredTags);
         }
     }
 }
