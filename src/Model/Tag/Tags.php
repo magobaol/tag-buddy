@@ -94,8 +94,12 @@ class Tags
         }
         $results = [];
 
+        $searchAsTagName = Name::fromString($search);
         foreach ($this->tags as $tag) {
-            if (stripos($tag->getSearchableString(), $search) !== false) {
+            if (
+                ($this->searchStringIsInAliases($tag, $search)) ||
+                ($this->searchStringIsInName($tag, $searchAsTagName))
+                ) {
                 $results[] = $tag;
             }
         }
@@ -103,10 +107,10 @@ class Tags
         return self::fromArrayOfTag($results);
     }
 
-    public function findByName(string $search): ?Tag
+    public function findByName(Name $name): ?Tag
     {
         foreach ($this->tags as $tag) {
-            if (strtolower($tag->getName()) == strtolower($search)) {
+            if (strtolower($tag->getName()) == strtolower($name->toString())) {
                 return $tag;
             }
         }
@@ -123,5 +127,15 @@ class Tags
         }
 
         return $cloned;
+    }
+
+    public function searchStringIsInAliases(Tag $tag, string $search): bool
+    {
+        return stripos($tag->getAliasesAsOneString(), $search) !== false;
+    }
+
+    public function searchStringIsInName(Tag $tag, Name $searchAsTagName): bool
+    {
+        return stripos($tag->getName(), $searchAsTagName->toString()) !== false;
     }
 }
