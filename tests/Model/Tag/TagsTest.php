@@ -2,6 +2,7 @@
 
 namespace Tests\Model\Tag;
 
+use Model\Tag\Name;
 use Model\Tag\Tag;
 use Model\Tag\Tags;
 use PHPUnit\Framework\TestCase;
@@ -117,18 +118,61 @@ class TagsTest extends TestCase
     {
         $tags = Tags::fromYamlFile($this->tagsFile);
 
-        $this->assertEquals('analogia', $tags->findByName('analogia')->getName());
+        $this->assertEquals('analogia', $tags->findByName(Name::fromString('analogia'))->getName());
     }
 
 
     /**
      * @test
      */
+    function it_should_find_a_tag_regardless_of_replaced_characters_name()
+    {
+        $tag1 = (new TagBuilder('api-design'))
+            ->build();
+
+        $tag2 = (new TagBuilder('progettazione-api'))
+            ->addAlias('api design')
+            ->build();
+
+        $tags = Tags::fromArrayOfTag([$tag1, $tag2]);
+
+        $foundTags = $tags->filterBy('api des');
+
+        $this->assertCount(2, $foundTags->getTags());
+    }
+
+    /**
+     * @test
+     */
+    function it_should_not_find_a_tag_when_alias_is_including_chars_that_are_replaced_in_name()
+    {
+        //This will be returned, because the searched string is always like it was a tag name, thus the chars are replaced
+        $tag1 = (new TagBuilder('api-design'))
+            ->build();
+
+        //This will not be returned, because the alias needs to be matched without any char replacement
+        $tag2 = (new TagBuilder('progettazione-api'))
+            ->addAlias('api design')
+            ->build();
+
+        $tags = Tags::fromArrayOfTag([$tag1, $tag2]);
+
+        $foundTags = $tags->filterBy('api#des');
+
+        $this->assertCount(1, $foundTags->getTags());
+        $this->assertEquals('api-design', $foundTags->getTags()[0]->getName());
+    }
+
+    /**
+     * @test
+     */
     function it_should_not_find_a_tag_by_name_using_an_alias()
     {
-        $tags = Tags::fromYamlFile($this->tagsFile);
+        $tags = Tags::fromArrayOfTag([
+            (new TagBuilder('analogia'))->addAlias('analogy')->build()
+        ]);
 
-        $this->assertNull($tags->findByName('analogy'));
+        $this->assertNull($tags->findByName(Name::fromString('analogy')));
     }
 
 

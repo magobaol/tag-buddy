@@ -2,6 +2,7 @@
 
 namespace App\TagsSearch;
 
+use Model\Tag\Name;
 use Model\Tag\Tags;
 
 class Alfred implements TagsSearch
@@ -30,11 +31,12 @@ class Alfred implements TagsSearch
             $items[] = $item;
         }
 
-        if (($search != '') && ($this->tags->findByName($search) == null)) {
+        $searchAsTagName = Name::fromString($search);
+        if (($search != '') && ($this->tags->findByName($searchAsTagName) == null)) {
             $items[] = [
-                'title' => $search,
-                'subtitle' => "Add $search as new tag",
-                'arg' => "add::$search",
+                'title' => $searchAsTagName->toString(),
+                'subtitle' => sprintf("Add %s as new tag",$searchAsTagName->toString()),
+                'arg' => sprintf("add::%s", $searchAsTagName->toString())
             ];
         }
 

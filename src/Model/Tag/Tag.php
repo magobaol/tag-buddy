@@ -67,9 +67,6 @@ class Tag
         ];
     }
 
-    /**
-     * @return Tag
-     */
     public function clone(): Tag
     {
         return new self(
