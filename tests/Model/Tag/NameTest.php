@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Model\Tag;
+namespace Tests\Model\Tag;
 
-use App\Common\Exception\AssertionFailed;
-use App\Model\Tag\Name;
+use Common\Exception\AssertionFailed;
+use Model\Tag\Name;
 use PHPUnit\Framework\TestCase;
 
 class NameTest extends TestCase

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model\Tag;
+namespace Model\Tag;
 
-use App\Common\StringManipulator;
-use App\Common\TagBuddyAssertion;
+use Common\StringManipulator;
+use Common\TagBuddyAssertion;
 
 class Name
 {

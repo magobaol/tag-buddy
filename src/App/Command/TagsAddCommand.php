@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Model\Tag\Tag;
-use App\Model\Tag\Tags;
+use Model\Tag\Tag;
+use Model\Tag\Tags;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

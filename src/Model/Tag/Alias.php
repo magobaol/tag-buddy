@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Tag;
+namespace Model\Tag;
 
-use App\Common\StringManipulator;
+use Common\StringManipulator;
 
 class Alias
 {

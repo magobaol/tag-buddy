@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Tag;
+namespace Model\Tag;
 
 use Symfony\Component\Yaml\Yaml;
 
