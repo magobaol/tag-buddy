@@ -103,6 +103,10 @@ class NameTest extends TestCase
                 ' 8 9 tag#word#10',
                 'tag-word-10'
             ],
+            [
+                ' 8 9 tag#word/10',
+                'tag-word-10'
+            ],
         ];
     }
 

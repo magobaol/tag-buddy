@@ -33,6 +33,7 @@ class Name
             StringManipulator::with($tag)
                 ->replaceSpacesWithDashes()
                 ->replaceHashtagWithDashes()
+                ->replaceSlashesWithDashes()
                 ->getResult()
         );
     }

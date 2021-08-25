@@ -37,6 +37,12 @@ class StringManipulator
         return $this;
     }
 
+    public function replaceSlashesWithDashes(): self
+    {
+        $this->value = str_replace('/', '-', $this->value);
+        return $this;
+    }
+
     public function trim(): self
     {
         $this->value = trim($this->value);
