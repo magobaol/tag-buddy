@@ -8,6 +8,7 @@ class TagBuddyException extends \RuntimeException
     private $causes;
 
     const ASSERTION_FAILED = 1001;
+    const TAG_SEARCH_OUTPUT_FORMAT_NOT_VALID = 1002;
 
     public static function createWithDetails($details): self
     {
