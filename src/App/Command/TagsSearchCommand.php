@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use App\TagsSearch\OutputFormat;
+use App\TagsSearch\TagsSearchFactory;
+use Model\Tag\Tags;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,16 +36,17 @@ class TagsSearchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $tagSearch = new TagSearch($this->tagsFilePath);
         $search = $input->getArgument('search-terms') ?? "";
 
-        if (!$input->getOption('output') || !in_array($input->getOption('output'), TagSearch::getOutputFormats())) {
-            $outputFormat = TagSearch::getDefaultOutputFormat();
+        if (!$input->getOption('output') || !OutputFormat::isValid($input->getOption('output'))) {
+            $outputFormat = OutputFormat::getDefaultFormat();
         } else {
-            $outputFormat = $input->getOption('output');
+            $outputFormat = OutputFormat::fromString($input->getOption('output'));
         }
 
-        $output->write($tagSearch->getResult($search, $outputFormat));
+        $tagsSearch = TagsSearchFactory::make($this->tagsFilePath, $outputFormat);
+        $output->write($tagsSearch->search($search));
+
         return Command::SUCCESS;
     }
 }
