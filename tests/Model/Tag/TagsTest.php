@@ -5,6 +5,7 @@ namespace Tests\Model\Tag;
 use Model\Tag\Tag;
 use Model\Tag\Tags;
 use PHPUnit\Framework\TestCase;
+use Tests\Model\Tag\Builder\TagBuilder;
 
 class TagsTest extends TestCase
 {
@@ -79,21 +80,15 @@ class TagsTest extends TestCase
      */
     function it_should_clone_itself()
     {
-        $tag1 = Tag::fromArray([
-            'name' => 'tag-1',
-            'aliases' => [
-                'tag-name-ALT-1',
-            ]
-        ]);
+        $tag1 = (new TagBuilder('tag-1'))
+            ->addAlias('tag-name-ALT-1')
+            ->build();
 
-        $tag2 = Tag::fromArray([
-            'name' => 'tag-2',
-            'aliases' => [
-                'tag-name-ALT-1',
-                'tag-name-alt-2',
-                'tag-name-alt-3'
-            ]
-        ]);
+        $tag2 = (new TagBuilder('tag-2'))
+            ->addAlias('tag-name-ALT-1')
+            ->addAlias('tag-name-alt-2')
+            ->addAlias('tag-name-alt-3')
+            ->build();
 
         $both = [$tag1, $tag2];
 
@@ -166,34 +161,25 @@ class TagsTest extends TestCase
      */
     function it_should_add_a_tag()
     {
-        $tag1 = Tag::fromArray([
-            'name' => 'tag-1',
-            'aliases' => [
-                'tag-name-ALT-1',
-            ]
-        ]);
+        $tag1 = (new TagBuilder('tag-1'))
+            ->addAlias('tag-name-ALT-1')
+            ->build();
 
-        $tag2 = Tag::fromArray([
-            'name' => 'tag-2',
-            'aliases' => [
-                'tag-name-ALT-1',
-                'tag-name-alt-2',
-                'tag-name-alt-3'
-            ]
-        ]);
+        $tag2 = (new TagBuilder('tag-2'))
+            ->addAlias('tag-name-ALT-1')
+            ->addAlias('tag-name-alt-2')
+            ->addAlias('tag-name-alt-3')
+            ->build();
 
         $both = [$tag1, $tag2];
 
         $tags = Tags::fromArrayOfTag($both);
 
-        $newTag = Tag::fromArray([
-            'name' => 'tag-2',
-            'aliases' => [
-                'tag-name-ALT-1',
-                'tag-name-alt-2',
-                'tag-name-alt-3'
-            ]
-        ]);
+        $newTag = (new TagBuilder('tag-2'))
+            ->addAlias('tag-name-ALT-1')
+            ->addAlias('tag-name-alt-2')
+            ->addAlias('tag-name-alt-3')
+            ->build();
 
         $tags->add($newTag);
 
