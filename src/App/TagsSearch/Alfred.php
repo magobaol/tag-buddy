@@ -9,7 +9,7 @@ class Alfred implements TagsSearch
 {
     private Tags $tags;
 
-    public function __construct($tags)
+    public function __construct(Tags $tags)
     {
         $this->tags = $tags;
     }
