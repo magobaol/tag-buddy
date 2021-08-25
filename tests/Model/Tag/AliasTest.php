@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Model\Tag;
+namespace Tests\Model\Tag;
 
-use App\Model\Tag\Alias;
+use Model\Tag\Alias;
 use PHPUnit\Framework\TestCase;
 
 class AliasTest extends TestCase

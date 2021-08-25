@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Model\Tag\Tags;
+use Model\Tag\Tags;
 use Symfony\Component\Yaml\Yaml;
 
 class TagSearch

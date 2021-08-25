@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Common\Exception;
+namespace Common\Exception;
 
 class AssertionFailed extends TagBuddyException
 {

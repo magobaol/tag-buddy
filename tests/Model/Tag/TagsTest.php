@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Model\Tag;
+namespace Tests\Model\Tag;
 
-use App\Model\Tag\Tag;
-use App\Model\Tag\Tags;
+use Model\Tag\Tag;
+use Model\Tag\Tags;
 use PHPUnit\Framework\TestCase;
 
 class TagsTest extends TestCase

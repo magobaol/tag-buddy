@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Common;
+namespace Tests\Common;
 
-use App\Common\StringManipulator;
+use Common\StringManipulator;
 use PHPUnit\Framework\TestCase;
 
 class StringManipulatorTest extends TestCase
