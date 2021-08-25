@@ -8,7 +8,7 @@ class Yaml implements TagsSearch
 {
     private Tags $tags;
 
-    public function __construct($tags)
+    public function __construct(Tags $tags)
     {
         $this->tags = $tags;
     }
@@ -18,4 +18,6 @@ class Yaml implements TagsSearch
         $filteredTags = $this->tags->filterBy($search);
         return \Symfony\Component\Yaml\Yaml::dump($filteredTags->toArrayWithNamesAsKeys());
     }
+
+
 }
