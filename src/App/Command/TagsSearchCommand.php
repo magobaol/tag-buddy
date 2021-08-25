@@ -44,7 +44,7 @@ class TagsSearchCommand extends Command
             $outputFormat = OutputFormat::fromString($input->getOption('output'));
         }
 
-        $tagsSearch = TagsSearchFactory::make($this->tagsFilePath, $outputFormat);
+        $tagsSearch = TagsSearchFactory::make(Tags::fromYamlFile($this->tagsFilePath), $outputFormat);
         $output->write($tagsSearch->search($search));
 
         return Command::SUCCESS;
