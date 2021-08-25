@@ -42,6 +42,21 @@ class OutputFormat
         return in_array($format, static::$formats);
     }
 
+    public static function Alfred(): self
+    {
+        return self::fromString(self::FORMAT_ALFRED);
+    }
+
+    public static function SimpleList(): self
+    {
+        return self::fromString(self::FORMAT_SIMPLE_LIST);
+    }
+
+    public static function Yaml(): self
+    {
+        return self::fromString(self::FORMAT_YAML);
+    }
+
     public function isAlfred(): bool
     {
         return $this->format == self::FORMAT_ALFRED;

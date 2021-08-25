@@ -6,7 +6,7 @@ use App\Exception\TagsSearchOutputFormatNotValid;
 use App\TagsSearch\OutputFormat;
 use PHPUnit\Framework\TestCase;
 
-class OutputSearchFormatTest extends TestCase
+class OutputFormatTest extends TestCase
 {
     public function test_fromString_withInvalidFormat_throwsException()
     {
