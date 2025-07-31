@@ -73,7 +73,7 @@ class StringManipulatorTest extends TestCase
         $this->assertEquals($result, $sm->trim()->getResult());
     }
 
-    public function it_should_trim_surrounding_spaces_data(): array
+    public static function it_should_trim_surrounding_spaces_data(): array
     {
         return [
             [
@@ -103,7 +103,7 @@ class StringManipulatorTest extends TestCase
         $this->assertEquals($result, StringManipulator::with($input)->stripLeadingNumbers()->getResult());
     }
 
-    public function stripLeadingNumbers_data(): array
+    public static function stripLeadingNumbers_data(): array
     {
         return [
             [

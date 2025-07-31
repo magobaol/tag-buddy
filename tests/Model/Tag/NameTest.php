@@ -72,7 +72,7 @@ class NameTest extends TestCase
         $this->assertEquals($result, Name::fromString($input)->toString());
     }
 
-    public function it_should_get_a_clean_name_data()
+    public static function it_should_get_a_clean_name_data()
     {
         return [
             [
