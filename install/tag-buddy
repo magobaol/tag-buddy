@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Production wrapper for tag-buddy (installed copy in ~/.local/opt/tag-buddy).
+# Reads the tags file path from XDG config and runs the Symfony console in prod.
+set -euo pipefail
+
+APP_DIR="$HOME/.local/opt/tag-buddy"
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/tag-buddy/config.yaml"
+
+# Bridge the XDG config to the env var the app expects.
+if [[ -f "$CONFIG" ]]; then
+  path="$(sed -n -E "s/^tags_file_path:[[:space:]]*['\"]?([^'\"]+)['\"]?[[:space:]]*\$/\1/p" "$CONFIG")"
+  [[ -n "${path:-}" ]] && export TAGS_FILE_PATH="$path"
+fi
+
+export APP_ENV=prod
+exec php "$APP_DIR/bin/console" "$@"
