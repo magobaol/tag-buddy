@@ -13,4 +13,6 @@ if [[ -f "$CONFIG" ]]; then
 fi
 
 export APP_ENV=prod
+# Resolve php under a minimal PATH (e.g. a headless launcher shell): Homebrew's bin.
+export PATH="/opt/homebrew/bin:$PATH"
 exec php "$APP_DIR/bin/console" "$@"
