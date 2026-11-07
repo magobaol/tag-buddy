@@ -2,12 +2,15 @@
 
 namespace App\Command;
 
+use Common\Exception\TagNameAlreadyUsed;
 use Model\Tag\Tag;
 use Model\Tag\Tags;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
@@ -28,6 +31,7 @@ class TagsAddCommand extends Command
     {
         $this
             ->addArgument('name', InputArgument::OPTIONAL, 'The tag name')
+            ->addOption('description', null, InputOption::VALUE_REQUIRED, 'Cosa copre il tag')
         ;
     }
 
@@ -35,10 +39,17 @@ class TagsAddCommand extends Command
     {
         $tagName = $input->getArgument('name');
 
-        $tag = Tag::fromString($tagName);
+        $tag = Tag::fromString($tagName)->withDescription($input->getOption('description'));
 
         $tags = Tags::fromYamlFile($this->tagsFilePath);
-        $tags->add($tag);
+        try {
+            $tags->add($tag);
+        } catch (TagNameAlreadyUsed $e) {
+            $errors = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
+            $errors->writeln(TagErrorMessage::for($e));
+
+            return Command::FAILURE;
+        }
         $tags->toYamlFile($this->tagsFilePath);
 
         return Command::SUCCESS;
