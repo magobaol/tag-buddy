@@ -20,7 +20,7 @@ class TagErrorMessage
             $e instanceof TagNameAlreadyUsed => sprintf('«%s» è già usato dal tag %s', $details['value'], $details['usedBy']),
             $e instanceof TagNotFound => sprintf('Tag «%s» non trovato', $details['name']),
             $e instanceof AliasNotFound => sprintf('Alias «%s» non presente nel tag %s', $details['alias'], $details['tag']),
-            default => $e->getMessage(),
+            default => 'Operazione non riuscita',
         };
     }
 }
