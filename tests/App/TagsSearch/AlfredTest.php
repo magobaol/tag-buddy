@@ -69,4 +69,28 @@ class AlfredTest extends TestCase
         $this->assertEquals('poesia', $decoded_result['items'][2]['title']);
         $this->assertEquals('add::poesia', $decoded_result['items'][2]['arg']);
     }
+
+    public function test_search_it_should_not_offer_to_add_a_text_that_is_an_alias_of_a_tag()
+    {
+        $tags = Tags::fromArrayOfTag([
+            (new TagBuilder('sviluppo'))->addAlias('coding')->build(),
+        ]);
+
+        $decoded = json_decode((new Alfred($tags))->search('Coding'), true);
+
+        $this->assertCount(1, $decoded['items']);
+        $this->assertEquals('use::sviluppo', $decoded['items'][0]['arg']);
+    }
+
+    public function test_search_it_should_not_offer_to_add_a_text_that_is_the_name_of_a_tag()
+    {
+        $tags = Tags::fromArrayOfTag([
+            (new TagBuilder('sviluppo'))->addAlias('coding')->build(),
+        ]);
+
+        $decoded = json_decode((new Alfred($tags))->search('sviluppo'), true);
+
+        $this->assertCount(1, $decoded['items']);
+        $this->assertEquals('use::sviluppo', $decoded['items'][0]['arg']);
+    }
 }
