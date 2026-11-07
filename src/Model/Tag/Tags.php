@@ -2,6 +2,8 @@
 
 namespace Model\Tag;
 
+use Common\Exception\TagNameAlreadyUsed;
+use Common\Exception\TagNotFound;
 use Symfony\Component\Yaml\Yaml;
 
 class Tags
@@ -23,7 +25,7 @@ class Tags
             $yaml = Yaml::parseFile($filename);
             foreach ($yaml['tags'] as $yamlTag) {
                 $tag = Tag::fromArray($yamlTag);
-                $tags->add($tag);
+                $tags->append($tag);
             }
         }
         return $tags;
@@ -44,15 +46,65 @@ class Tags
     {
         $collection = new self();
         foreach ($tags as $tag) {
-            $collection->add($tag);
+            $collection->append($tag);
         }
 
         return $collection;
     }
 
+    /**
+     * @throws TagNameAlreadyUsed when the name or an alias is already used by another tag
+     */
     public function add(Tag $tag): void
     {
+        $this->assertUnique($tag, null);
+        $this->append($tag);
+    }
+
+    /**
+     * Replaces the tag with the same name, keeping its position.
+     *
+     * @throws TagNotFound when no tag has that name
+     * @throws TagNameAlreadyUsed when an alias is already used by another tag
+     */
+    public function replace(Tag $updated): void
+    {
+        foreach ($this->tags as $index => $tag) {
+            if (strcasecmp($tag->getName(), $updated->getName()) === 0) {
+                $this->assertUnique($updated, $tag);
+                $this->tags[$index] = $updated;
+                return;
+            }
+        }
+
+        throw TagNotFound::forName($updated->getName());
+    }
+
+    /**
+     * Loading and filtering do not validate: a file that already has collisions must still be readable.
+     */
+    private function append(Tag $tag): void
+    {
         $this->tags[] = $tag;
+    }
+
+    private function assertUnique(Tag $tag, ?Tag $ignoring): void
+    {
+        $usedBy = [];
+        foreach ($this->tags as $existing) {
+            if ($existing === $ignoring) {
+                continue;
+            }
+            foreach ($existing->getNameAndAliases() as $value) {
+                $usedBy[strtolower($value)] = $existing->getName();
+            }
+        }
+
+        foreach ($tag->getNameAndAliases() as $value) {
+            if (isset($usedBy[strtolower($value)])) {
+                throw TagNameAlreadyUsed::forValue($value, $usedBy[strtolower($value)]);
+            }
+        }
     }
 
     /**
@@ -123,7 +175,7 @@ class Tags
         $cloned = new self();
 
         foreach ($this->tags as $tag) {
-            $cloned->add($tag->clone());
+            $cloned->append($tag->clone());
         }
 
         return $cloned;

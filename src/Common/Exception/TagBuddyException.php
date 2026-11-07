@@ -9,6 +9,9 @@ class TagBuddyException extends \RuntimeException
 
     const ASSERTION_FAILED = 1001;
     const TAG_SEARCH_OUTPUT_FORMAT_NOT_VALID = 1002;
+    const TAG_NAME_ALREADY_USED = 1003;
+    const TAG_NOT_FOUND = 1004;
+    const ALIAS_NOT_FOUND = 1005;
 
     public static function createWithDetails($details): self
     {

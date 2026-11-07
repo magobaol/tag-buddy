@@ -219,10 +219,8 @@ class TagsTest extends TestCase
 
         $tags = Tags::fromArrayOfTag($both);
 
-        $newTag = (new TagBuilder('tag-2'))
-            ->addAlias('tag-name-ALT-1')
-            ->addAlias('tag-name-alt-2')
-            ->addAlias('tag-name-alt-3')
+        $newTag = (new TagBuilder('tag-3'))
+            ->addAlias('tag-3-alt-1')
             ->build();
 
         $tags->add($newTag);
