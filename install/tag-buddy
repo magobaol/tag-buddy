@@ -12,6 +12,13 @@ if [[ -f "$CONFIG" ]]; then
   [[ -n "${path:-}" ]] && export TAGS_FILE_PATH="$path"
 fi
 
+# Without a tags path the app would fall back to the relative one in the shipped .env and
+# resolve it against the current directory: stop instead of working on the wrong file.
+if [[ -z "${TAGS_FILE_PATH:-}" ]]; then
+  echo "tag-buddy: tags_file_path non impostato. Atteso in $CONFIG, nella forma: tags_file_path: '/percorso/del/file/tags.yaml'" >&2
+  exit 1
+fi
+
 export APP_ENV=prod
 # Resolve php under a minimal PATH (e.g. a headless launcher shell): Homebrew's bin.
 export PATH="/opt/homebrew/bin:$PATH"
