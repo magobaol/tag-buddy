@@ -26,7 +26,7 @@ class HomePathEnvVarProcessor implements EnvVarProcessorInterface
             return $path;
         }
         if ($home === '') {
-            throw new \RuntimeException(sprintf('Cannot expand "%s": HOME is not set.', $path));
+            throw new \RuntimeException(sprintf('Impossibile espandere «%s»: HOME non impostato', $path));
         }
 
         return $home.substr($path, 1);

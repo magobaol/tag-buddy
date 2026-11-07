@@ -30,6 +30,7 @@ class HomePathEnvVarProcessorTest extends TestCase
     public function test_it_fails_when_home_is_unknown(): void
     {
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('HOME non impostato');
 
         HomePathEnvVarProcessor::expand('~/tags.yaml', '');
     }
