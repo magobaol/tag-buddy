@@ -113,6 +113,18 @@ class TagsUniquenessTest extends TestCase
     /**
      * @test
      */
+    function it_should_find_the_tag_using_a_value_as_name_or_alias_regardless_of_case()
+    {
+        $tags = $this->tagsWithCoding();
+
+        $this->assertEquals('ai-coding', $tags->findUsing('AI-CODING')->getName());
+        $this->assertEquals('ai-coding', $tags->findUsing('Vibe Coding')->getName());
+        $this->assertNull($tags->findUsing('unused'));
+    }
+
+    /**
+     * @test
+     */
     function it_should_replace_a_tag_keeping_its_position()
     {
         $tags = $this->tagsWithCoding();

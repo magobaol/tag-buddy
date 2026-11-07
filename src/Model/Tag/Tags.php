@@ -88,21 +88,31 @@ class Tags
         $this->tags[] = $tag;
     }
 
-    private function assertUnique(Tag $tag, ?Tag $ignoring): void
+    /**
+     * The tag that uses the value as its name or as one of its aliases, regardless of case.
+     */
+    public function findUsing(string $value, ?Tag $ignoring = null): ?Tag
     {
-        $usedBy = [];
-        foreach ($this->tags as $existing) {
-            if ($existing === $ignoring) {
+        foreach ($this->tags as $tag) {
+            if ($tag === $ignoring) {
                 continue;
             }
-            foreach ($existing->getNameAndAliases() as $value) {
-                $usedBy[strtolower($value)] = $existing->getName();
+            foreach ($tag->getNameAndAliases() as $used) {
+                if (strcasecmp($used, $value) === 0) {
+                    return $tag;
+                }
             }
         }
 
+        return null;
+    }
+
+    private function assertUnique(Tag $tag, ?Tag $ignoring): void
+    {
         foreach ($tag->getNameAndAliases() as $value) {
-            if (isset($usedBy[strtolower($value)])) {
-                throw TagNameAlreadyUsed::forValue($value, $usedBy[strtolower($value)]);
+            $owner = $this->findUsing($value, $ignoring);
+            if ($owner !== null) {
+                throw TagNameAlreadyUsed::forValue($value, $owner->getName());
             }
         }
     }

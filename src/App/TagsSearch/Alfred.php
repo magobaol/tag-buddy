@@ -32,7 +32,7 @@ class Alfred implements TagsSearch
         }
 
         $searchAsTagName = Name::fromString($search);
-        if (($search != '') && ($this->tags->findByName($searchAsTagName) == null)) {
+        if (($search != '') && ($this->tags->findUsing($searchAsTagName->toString()) == null)) {
             $items[] = [
                 'title' => $searchAsTagName->toString(),
                 'subtitle' => sprintf("Add %s as new tag",$searchAsTagName->toString()),
